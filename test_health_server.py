@@ -5,7 +5,7 @@ import threading
 import unittest
 from http.client import HTTPConnection
 
-from health_server import create_server
+from health_server import SERVICE_NAME, SERVICE_VERSION, create_server
 
 
 class HealthServerTest(unittest.TestCase):
@@ -36,6 +36,15 @@ class HealthServerTest(unittest.TestCase):
         self.assertEqual(status, 200)
         self.assertIn("application/json", content_type)
         self.assertEqual(json.loads(body.decode("utf-8")), {"status": "ok"})
+
+    def test_version_returns_metadata(self):
+        status, content_type, body = self._get("/version")
+        self.assertEqual(status, 200)
+        self.assertIn("application/json", content_type)
+        self.assertEqual(
+            json.loads(body.decode("utf-8")),
+            {"service": SERVICE_NAME, "version": SERVICE_VERSION},
+        )
 
     def test_unknown_path_returns_404(self):
         status, _, body = self._get("/unknown")
