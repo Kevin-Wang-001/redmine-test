@@ -24,6 +24,18 @@ Expected response:
 {"status": "ok"}
 ```
 
+## Version check
+
+```bash
+curl http://127.0.0.1:8000/version
+```
+
+Expected response:
+
+```json
+{"service": "redmine-test", "version": "0.1.0"}
+```
+
 ## Merge gate
 
 `main` 分支受保护：

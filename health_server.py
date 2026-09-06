@@ -3,12 +3,20 @@
 import json
 from http.server import BaseHTTPRequestHandler, HTTPServer
 
+SERVICE_NAME = "redmine-test"
+SERVICE_VERSION = "0.1.0"
+
 
 class HealthCheckHandler(BaseHTTPRequestHandler):
     def do_GET(self):
         path = self.path.split("?", 1)[0]
         if path == "/health":
             self._send_json(200, {"status": "ok"})
+        elif path == "/version":
+            self._send_json(
+                200,
+                {"service": SERVICE_NAME, "version": SERVICE_VERSION},
+            )
         else:
             self._send_json(404, {"error": "not found"})
 
